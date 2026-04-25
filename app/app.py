@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import csv
 import io
 import sqlite3
@@ -7,12 +8,17 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from flask import Flask, flash, redirect, render_template, request, url_for
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / "data" / "isg.db"
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "dev-secret-key"
+# Reverse proxy arkasında yanlış host/proto algısını düzeltir.
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)  # type: ignore[assignment]
+# Local erişim senaryolarında host doğrulama hatalarını önlemek için.
+app.config["TRUSTED_HOSTS"] = ["localhost", "127.0.0.1", "[::1]"]
 
 
 def get_conn() -> sqlite3.Connection:
@@ -230,6 +236,15 @@ def import_employees():
     return render_template("import_employees.html", result=result)
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="İSG demo uygulamasını başlatır.")
+    parser.add_argument("--host", default="0.0.0.0", help="Dinlenecek host (varsayılan: 0.0.0.0)")
+    parser.add_argument("--port", type=int, default=5000, help="Dinlenecek port (varsayılan: 5000)")
+    parser.add_argument("--debug", action="store_true", help="Flask debug modunu aç")
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
     init_db()
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    args = parse_args()
+    app.run(debug=args.debug, host=args.host, port=args.port)

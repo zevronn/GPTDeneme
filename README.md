@@ -23,11 +23,31 @@ pip install -r requirements.txt
 
 3. Uygulamayı başlat:
 ```bash
-python app/app.py
+python app/app.py --host 0.0.0.0 --port 5000
 ```
 
 4. Tarayıcıdan aç:
-- http://127.0.0.1:5000
+- Öncelik: http://localhost:5000
+- Alternatif: http://127.0.0.1:5000
+
+## HTTP 403 Hatası İçin Çözüm
+Eğer `127.0.0.1 erişim reddedildi (HTTP ERROR 403)` görürseniz:
+
+1. Uygulamayı host/port belirterek başlatın:
+```bash
+python app/app.py --host 0.0.0.0 --port 8080
+```
+
+2. Tarayıcıda `127.0.0.1` yerine `localhost` kullanın:
+- http://localhost:8080
+
+3. Kurumsal proxy/VPN varsa geçici kapatıp tekrar deneyin.
+
+4. Hâlâ sorun varsa terminalde şunu kontrol edin:
+```bash
+curl -i http://localhost:8080
+```
+200 dönüyorsa uygulama çalışıyordur, sorun tarayıcı/proxy katmanındadır.
 
 ## CSV Örnek Şablon
 ```csv
