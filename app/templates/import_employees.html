@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Toplu Çalışan Listesi Yükleme (CSV)</h1>
+<p>Beklenen kolonlar: employee_id, full_name, location_code, department, position, employment_start_date, is_active</p>
+
+<form method="post" enctype="multipart/form-data">
+  <input type="file" name="file" accept=".csv" required />
+  <button type="submit">Yükle</button>
+</form>
+
+{% if result %}
+  <div class="card" style="margin-top:15px;">
+    <h3>Yükleme Sonucu</h3>
+    <p>Toplam: {{ result.total }}</p>
+    <p>Başarılı: {{ result.success }}</p>
+    <p>Hatalı: {{ result.failed }}</p>
+    {% if result.errors %}
+      <h4>Hata Detayı</h4>
+      <ul>
+      {% for err in result.errors %}
+        <li>{{ err }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endif %}
+{% endblock %}

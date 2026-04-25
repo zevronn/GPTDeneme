@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Ana Sayfa - Tüm Lokasyonlar</h1>
+<div class="stats">
+  <div class="stat"><strong>Toplam Lokasyon:</strong> {{ summary.location_total }}</div>
+  <div class="stat"><strong>Toplam Çalışan:</strong> {{ summary.employee_total }}</div>
+  <div class="stat"><strong>Toplam Kaza:</strong> {{ summary.incident_total }}</div>
+</div>
+
+<div class="grid">
+  {% for c in cards %}
+  <div class="card">
+    <h3>{{ c.name }}</h3>
+    <p><strong>Kod:</strong> {{ c.code }}</p>
+    <p><strong>Konum:</strong> {{ c.city }} / {{ c.district }}</p>
+    <p><strong>Son 30 Gün Kaza:</strong> {{ c.incident_count }}</p>
+    <p><strong>Aktif Çalışan:</strong> {{ c.active_emp }}</p>
+    <p><strong>Risk:</strong> <span class="risk-{{ c.risk_level }}">{{ c.risk_level }}</span></p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
