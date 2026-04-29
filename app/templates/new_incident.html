@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Yeni İş Kazası Kaydı</h1>
+<form method="post">
+  <label>Lokasyon</label>
+  <select name="location_code" required>
+    <option value="">Seçiniz</option>
+    {% for loc in locations %}
+      <option value="{{ loc.code }}">{{ loc.name }} ({{ loc.code }})</option>
+    {% endfor %}
+  </select>
+
+  <label>Olay Tipi</label>
+  <input name="incident_type" placeholder="Örn: Kesik" required />
+
+  <label>Şiddet</label>
+  <select name="severity" required>
+    <option value="">Seçiniz</option>
+    <option>Hafif</option>
+    <option>Orta</option>
+    <option>Ağır</option>
+  </select>
+
+  <label>Açıklama</label>
+  <textarea name="description" rows="5" required></textarea>
+
+  <button type="submit">Kaydet</button>
+</form>
+{% endblock %}

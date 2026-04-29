@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>İSG Takip</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f6f7fb; color: #222; }
+    header { background: #0f172a; color: #fff; padding: 14px 22px; }
+    nav a { color: #fff; margin-right: 16px; text-decoration: none; font-weight: 600; }
+    main { padding: 22px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap: 14px; }
+    .card { background:#fff; border-radius: 10px; padding: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+    .stats { display:flex; gap:12px; margin-bottom: 18px; flex-wrap: wrap; }
+    .stat { background:#fff; padding:10px 14px; border-radius:8px; min-width: 180px; }
+    .risk-Düşük{color:#15803d;font-weight:700;}
+    .risk-Orta{color:#b45309;font-weight:700;}
+    .risk-Yüksek{color:#b91c1c;font-weight:700;}
+    label { display:block; margin-top:10px; font-weight:600; }
+    input,select,textarea,button { width:100%; padding:9px; margin-top:6px; }
+    button { background:#2563eb; color:#fff; border:none; border-radius:6px; cursor:pointer; }
+    .msg { padding:10px; border-radius:6px; margin-bottom:12px; }
+    .success { background:#dcfce7; }
+    .error { background:#fee2e2; }
+  </style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('new_incident') }}">Yeni Kaza Kaydı</a>
+    <a href="{{ url_for('import_employees') }}">Çalışan Toplu Yükle</a>
+  </nav>
+</header>
+<main>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="msg {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>
